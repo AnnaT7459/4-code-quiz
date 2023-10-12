@@ -1,3 +1,33 @@
+// added timer with H. Burke
+var timeEl = document.querySelector("#timer");
+var startBtn = document.querySelector("#startBtn")
+var timeOut = document.querySelector("#timeOut")
+
+function startQuiz() {
+  timerCount = 5;
+  startTime();
+  getQuestion();
+}
+
+startBtn.addEventListener("click", startQuiz)
+function startTime() {
+  timer = setInterval(function() {
+    timerCount -- ;
+    timeEl.textContent = timerCount + " seconds remaining"
+    if(timerCount === 0) {
+      endQuiz()
+      clearInterval(timer);
+    }
+  }, 1000)
+}
+function endQuiz() {
+  timeOut.textContent = "Time's Up!"
+  if (timerCount === 0) {
+    clearInterval(timer)
+  }
+}
+
+
 var questions = [
     {
       title: 'Commonly used data types DO NOT include:',
@@ -40,10 +70,10 @@ var questions = [
   
   // variables to reference DOM elements
   var questionsEl = document.getElementById('questions');
-  var timerEl = document.getElementById('time');
+  // var timerEl = document.getElementById('time');
   var choicesEl = document.getElementById('choices');
   var submitBtn = document.getElementById('submit');
-  var startBtn = document.getElementById('start');
+  // var startBtn = document.getElementById('start');
 
 
   function getQuestion() {
