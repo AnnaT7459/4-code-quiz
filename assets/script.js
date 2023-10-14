@@ -30,42 +30,42 @@ startBtn.addEventListener("click", startQuiz)
 function endQuiz() {
   // set value of the time remaining
   timeOut.textContent = "Time's Up!"
-    clearInterval(countDown)
+  clearInterval(countDown)
 }
 
 
 var questions = [
   {
-    title: 'Commonly used data types DO NOT include:',
-    choices: ['strings', 'booleans', 'alerts', 'numbers'],
-    answer: 'alerts',
+    title: "Commonly used data types DO NOT include:",
+    choices: ["strings", "booleans", "alerts", "numbers"],
+    answer: "alerts",
   },
   {
-    title: 'The condition in an if / else statement is enclosed within ____.',
-    choices: ['quotes', 'curly brackets', 'parentheses', 'square brackets'],
-    answer: 'parentheses',
+    title: "The condition in an if / else statement is enclosed within ____.",
+    choices: ["quotation marks", "curly brackets", "parentheses", "square brackets"],
+    answer: "parentheses",
   },
   {
-    title: 'Arrays in JavaScript can be used to store ____.',
+    title: "Arrays in JavaScript can be used to store ____.",
     choices: [
-      'numbers and strings',
-      'other arrays',
-      'booleans',
-      'all of the above',
+      "numbers and strings",
+      "other arrays",
+      "booleans",
+      "all of the above",
     ],
-    answer: 'all of the above',
+    answer: "all of the above",
   },
   {
     title:
-      'String values must be enclosed within ____ when being assigned to variables.',
-    choices: ['commas', 'curly brackets', 'quotes', 'parentheses'],
-    answer: 'quotes',
+      "String values must be enclosed within ____ when being assigned to variables.",
+    choices: ["commas", "curly brackets", "quotation marks", "parentheses"],
+    answer: "quotation marks",
   },
   {
     title:
-      'A very useful tool used during development and debugging for printing content to the debugger is:',
-    choices: ['JavaScript', 'terminal / bash', 'for loops', 'console.log'],
-    answer: 'console.log',
+      "A very useful tool used during development and debugging for printing content to the debugger is:",
+    choices: ["JavaScript", "terminal / bash", "for loops", "console.log"],
+    answer: "console.log",
   },
 ];
 
@@ -76,7 +76,7 @@ var allQs = 0;
 // questionsEl pulls all of the question elements from the array
 // .length means there are 5 questions to answer/ 5 elements in the array
 var timePerQ = questions.length * 15;
-var questionsEl = document.getElementById('questions');
+var questionsEl = document.getElementById("questions");
 var timeEl = document.querySelector("#countDown")
 var choicesEl = document.querySelector("#choices")
 
@@ -88,6 +88,27 @@ function showQuestion() {
   // this is the text that will show on the screen. From all the questions, the one that is presented to the user comes from the titles in the questions array
   titleEl.textContent = displayQ.title
 
+  // remove choices from previous question
+  choicesEl.innerHTML = " ";
+
+  // this for loop will repeat the same process of providing the choices for each question (from the questions array) that is being displayed at the time 
+  // var i = 0 means that it starts with the first item in the index (array)
+  // i < displayQ.choices.length means that the process will continue until it reaches the end of the array contents
+  // i++ means that it will move to the next element/question&choices in the questions array
+  for (var i = 0; i < displayQ.choices.length; i++) {
+    // defining choice as the choices from each question in the index array of question bank
+    var choice = displayQ.choices[i];
+    // creating buttons for each answer choice 
+    var choicesBtn = document.createElement("button");
+    // this will be used to style the choice buttons
+    choicesBtn.setAttribute("class", "choice");
+    // this will pull the content from the choice variable within the questions array)
+    choicesBtn.setAttribute("value", choice)
+    // This is the content that will be in each button: numbers each button starting @ 1. 
+    choicesBtn.textContent = i + 1 + ". " + choice
+    // this is how everything about the button will be displayed
+    choicesEl.appendChild(choicesBtn);
+  }
 }
 
 
