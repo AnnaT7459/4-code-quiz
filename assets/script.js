@@ -80,38 +80,43 @@ function displayQuestion() {
   }
 }
 
-// function checkAnswer(event) {
-//   var selectedAnswer = event.target.textContent;
-//   var currentQuestion = questionContainer[currentQuestionIndex];
+// created function to check answers the user chooses/clicks- the result of the event.
+function checkAnswer(event) { 
+  var selectedAnswer = event.target.textContent;
+  var currentQuestion = questionContainer[currentQuestionIndex];
 
-//   if (selectedAnswer === currentQuestion.answer) {
-//     // Correct answer
-//     alert("Correct!");
-//     console.log("it works")
-//     // Award 10 points 
-//   } else {
-//     (selectedAnswer !== currentQuestion.answer);
-//     alert("Incorrect!");
-//     // Deduct 10 seconds from the timer
-//     timerCount -= 10;
-//     if (timerCount < 0) {
-//       timerCount = 0;
-//     }
-//   }
-//   timerEl.textContent = timerCount + " seconds left!";
-//   displayQuestion();
-// }
- 
+  if (currentQuestion) {
+    var correctAnswer = currentQuestion.correctAnswer;
+    var feedbackElement = document.getElementById("feedback");
+
+    if (selectedAnswer === correctAnswer) {
+      // Correct answer
+      feedbackElement.textContent = "Correct!";
+      console.log("it works");
+      // Award 10 points
+    } else {
+      feedbackElement.textContent = "Wrong!";
+      // Deduct 10 seconds from the timer
+      timerCount -= 10;
+      if (timerCount < 0) {
+        timerCount = 0;
+      }
+    }
+    timerEl.textContent = timerCount + " seconds left!";
+    displayQuestion();
+  }
+}
+
 var questionContainer = [
   {
     question: "Commonly used data types DO NOT include:",
     choices: ["strings", "booleans", "alerts", "numbers"],
-    answer: "alerts",
+    correctAnswer: "alerts",
   },
   {
     question: "The condition in an if / else statement is enclosed within ____.",
     choices: ["quotation marks", "curly brackets", "parentheses", "square brackets"],
-    answer: "parentheses",
+    correctAnswer: "parentheses",
   },
   {
     question: "Arrays in JavaScript can be used to store ____.",
@@ -121,19 +126,19 @@ var questionContainer = [
       "booleans",
       "all of the above",
     ],
-    answer: "all of the above",
+    correctAnswer: "all of the above",
   },
   {
     question:
       "String values must be enclosed within ____ when being assigned to variables.",
     choices: ["commas", "curly brackets", "quotation marks", "parentheses"],
-    answer: "quotation marks",
+    correctAnswer: "quotation marks",
   },
   {
     question:
       "A very useful tool used during development and debugging for printing content to the debugger is:",
     choices: ["JavaScript", "terminal / bash", "for loops", "console.log"],
-    answer: "console.log",
+    correctAnswer: "console.log",
   },
 ];
 
