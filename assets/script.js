@@ -14,12 +14,18 @@ var currentQuestionIndex = 0;
 var timerCount = 75;
 // starting score at 0
 var score = 0
+// this will show the user their final score at the end of the quiz
+var finalScoreElement = document.getElementById("final-score");
+finalScoreElement.textContent = score; 
+
 
 // created an event listener when the "Start Quiz" button is clicked. That triggers the startQuiz function.
 startBtn.addEventListener("click", startQuiz);
 
 // this function starts the timer and displays the 1st question
 function startQuiz() {
+  // this hides the Start Quiz button once it's been clicked
+  startBtn.style.display = "none";
   timerCount = 75;
   startTimer();
   displayQuestion();
@@ -48,6 +54,7 @@ function countEnd() {
   question.textContent = "";
   choices.innerHTML = "";
 }
+
 // this function is also triggered when the Start Quiz button is clicked.
 function displayQuestion() {
   // this is a boolean to check that the index of questions being displayed is "tracked", if the last question is answered, then that means the user has reached the end of the quiz, otherwise, the quiz continues.
@@ -57,7 +64,6 @@ function displayQuestion() {
     console.log("Displaying question:", currentQuestion.question)
     // this clears out the answer choices
     choices.innerHTML = "";
-
     // this for loop tells the computer to start with the first question (0) and gives the answer choices. Then it moves on to the next question.
     for (var i = 0; i < currentQuestion.choices.length; i++) {
       // this goes to the question being displayed and creates an index for the answer choices
@@ -76,8 +82,12 @@ function displayQuestion() {
   } else {
     // function described above
     countEnd();
+    // users will be able to enter their initials with their high score after the quiz ends
+    var initialsForm = document.getElementById("initials-form");
+    initialsForm.style.display = "block";
   }
 }
+
 // The event that fires this function is the "clicking" of a choices button
 function checkAnswer(event) {
   // this tells the computer that the click was to select that answer
@@ -91,7 +101,6 @@ function checkAnswer(event) {
   console.log("Selected Answer:", selectedAnswer);
   console.log("Correct Answer:", correctAnswer);
   console.log("Current Question Index:", currentQuestionIndex);
-
   // this tells the computer that if the correct answer is chosen, the feedback will tell the user they are correct, or otherwise "wrong"
   if (selectedAnswer === correctAnswer) {
     // Correct answer
@@ -109,14 +118,11 @@ function checkAnswer(event) {
     }
   }
   timerEl.textContent = timerCount + " seconds left!";
-
   // // Increment the index after checking the answer for the current question
   currentQuestionIndex++;
-
   // displays the next question
   displayQuestion();
 }
-
 
 var questionContainer = [
   {

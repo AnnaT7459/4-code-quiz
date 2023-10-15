@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel= "stylesheet" href = "./assets/style.css">
+    <link rel="stylesheet" href="./assets/style.css">
     <title>Coding Quiz</title>
 </head>
+
 <body>
     <header>
         <h1>Coding Quiz</h1>
     </header>
     <main>
-        <h2>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your time by 10 seconds. Each correct answer is worth 10 points!</h2>
+        <h2>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect
+            answers will penalize your time by 10 seconds. Each correct answer is worth 10 points!</h2>
         <div id="timer">75 seconds left!</div>
-        <div id="score">Your Score:</div>
         <div id="timeOut"></div>
         <h2 id="questionText"></h2>
         <h3 id="choicesText"></h3>
         <h4 id="feedback"></h4>
         <button id="startButton">Start Quiz</button>
-        <form id="initials-form">
-            <label for="initials">Enter your initials:</label>
-            <input type="text" id="initials" />
+        <!-- span allows the final score to be styled without affecting the score keeper within the quiz -->
+        <div id="score">Your Score:<span id="final-score"></span></div>
+        <form id="initials-form" style="display: none">
+            <label for="initials">Enter your initials: </label>
+            <input type="text" id="initials">
             <button type="submit">Submit</button>
-        </form> 
     </main>
-    <script src = "./assets/script.js"></script>
+    <script src="./assets/script.js"></script>
 </body>
+
 </html>
