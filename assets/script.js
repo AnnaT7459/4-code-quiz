@@ -12,6 +12,8 @@ var choices = document.querySelector("#choicesText");
 var currentQuestionIndex = 0;
 // variable to set the timer
 var timerCount = 75;
+// starting score at 0
+var score = 0
 
 // created an event listener when the "Start Quiz" button is clicked. That triggers the startQuiz function.
 startBtn.addEventListener("click", startQuiz);
@@ -42,26 +44,24 @@ function startTimer() {
 // this function stops the timer and alerts the user that they ran out of time. Then it clears out the current question and their choices in order to move onto the next
 function countEnd() {
   clearInterval(timer);
-  timeOut.textContent = "Time's Up!";
+  timeOut.textContent = "All done!";
   question.textContent = "";
   choices.innerHTML = "";
 }
-
 // this function is also triggered when the Start Quiz button is clicked.
 function displayQuestion() {
   // this is a boolean to check that the index of questions being displayed is "tracked", if the last question is answered, then that means the user has reached the end of the quiz, otherwise, the quiz continues.
   if (currentQuestionIndex < questionContainer.length) {
     var currentQuestion = questionContainer[currentQuestionIndex];
-      question.textContent = currentQuestion.question;
-      console.log("Displaying question:", currentQuestion.question)
-      // this clears out the answer choices
-      choices.innerHTML = "";
+    question.textContent = currentQuestion.question;
+    console.log("Displaying question:", currentQuestion.question)
+    // this clears out the answer choices
+    choices.innerHTML = "";
 
     // this for loop tells the computer to start with the first question (0) and gives the answer choices. Then it moves on to the next question.
     for (var i = 0; i < currentQuestion.choices.length; i++) {
       // this goes to the question being displayed and creates an index for the answer choices
       var choice = currentQuestion.choices[i];
-      
       // this makes all the answer choices into buttons
       var choiceButton = document.createElement("button");
       choiceButton.textContent = choice;
@@ -73,24 +73,33 @@ function displayQuestion() {
       choices.appendChild(choiceButton);
     }
     // this tells the computer when to move on to the next question
-    currentQuestionIndex++;
   } else {
     // function described above
     countEnd();
   }
 }
-
+// The event that fires this function is the "clicking" of a choices button
 function checkAnswer(event) {
+  // this tells the computer that the click was to select that answer
   var selectedAnswer = event.target.textContent;
+  // this tells the computer that the question being displayed comes from the list of questions in the question bank
   var currentQuestion = questionContainer[currentQuestionIndex];
+  // this tells the computer that the answer property in the question property is the correct answer
   var correctAnswer = currentQuestion.answer;
+  // this pulls the h4 tag id
   var feedbackElement = document.getElementById("feedback");
+  console.log("Selected Answer:", selectedAnswer);
+  console.log("Correct Answer:", correctAnswer);
+  console.log("Current Question Index:", currentQuestionIndex);
 
+  // this tells the computer that if the correct answer is chosen, the feedback will tell the user they are correct, or otherwise "wrong"
   if (selectedAnswer === correctAnswer) {
     // Correct answer
     feedbackElement.textContent = "Correct!";
-
     // Award 10 points
+    score += 10;
+    var scoreElement = document.getElementById("score");
+    scoreElement.textContent = "Your Score: " + score;
   } else {
     feedbackElement.textContent = "Wrong!";
     // Deduct 10 seconds from the timer
@@ -100,13 +109,14 @@ function checkAnswer(event) {
     }
   }
   timerEl.textContent = timerCount + " seconds left!";
-  
-  // Increment the index after checking the answer for the current question
+
+  // // Increment the index after checking the answer for the current question
   currentQuestionIndex++;
-  
+
   // displays the next question
   displayQuestion();
 }
+
 
 var questionContainer = [
   {
