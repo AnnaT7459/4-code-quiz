@@ -1,52 +1,120 @@
-// added timer with H. Burke
-var timeEl = document.querySelector("#countDown")
-var startBtn = document.querySelector("#startBtn")
-var timeOut = document.querySelector("#timeOut")
+// pulls id of the button tag in HTML
+var startBtn = document.getElementById("startButton");
+// pulls id from the div tag in HTML and the query selector allows me to manipulate the id in a broad sense
+var timerEl = document.querySelector("#timer");
+// pulls id from the div tag in HTML and the query selector allows me to manipulate the id in a broad sense
+var timeOut = document.querySelector("#timeOut");
+// pulls id from the h2 tag in HTML and the query selector allows me to manipulate the id in a broad sense
+var question = document.querySelector("#questionText");
+// pulls id from the h3 tag in HTML and the query selector allows me to manipulate the id in a broad sense
+var choices = document.querySelector("#choicesText");
+// created variable to set the question "counter" at 0 for the 1st question, then it will increment to the next question through 4 since there are 5 questions
+var currentQuestionIndex = 0;
+// variable to set the timer
+var timerCount = 75;
 
-var timerCount = 5
-var countDown;
+// created an event listener when the "Start Quiz" button is clicked. That triggers the startQuiz function.
+startBtn.addEventListener("click", startQuiz);
 
-var timeRemain
-
-
-
+// this function starts the timer and displays the 1st question
 function startQuiz() {
-  // applied setInterval function to global timer variable
-  countDown = setInterval(function () {
-    // -- = decrement
+  timerCount = 75;
+  startTimer();
+  displayQuestion();
+}
+
+// when the Start Quiz button is clicked, the timer begins to countdown.
+function startTimer() {
+  var timer = setInterval(function () {
+    //  -- means decrement
     timerCount--;
-    timeEl.textContent = timerCount + " seconds remaining"
+    // this if statement says that if the timer runs out, it will trigger the countEnd function and as the timer is counting down, it will tell the user how many seconds they have left
     if (timerCount === 0) {
-      endQuiz()
-      clearInterval(countDown);
+      clearInterval(timer);
+      countEnd();
+    } else {
+      timerEl.textContent = timerCount + " seconds left!";
     }
-  }, 1000)
-  // displays first question
-  showQuestion();
+    // this says there are 1000 miliseconds in each "second" before it decrements
+  }, 1000);
 }
 
-startBtn.addEventListener("click", startQuiz)
-
-function endQuiz() {
-  // set value of the time remaining
-  timeOut.textContent = "Time's Up!"
-  clearInterval(countDown)
+// this function stops the timer and alerts the user that they ran out of time. Then it clears out the current question and their choices in order to move onto the next
+function countEnd() {
+  clearInterval(timer);
+  timeOut.textContent = "Time's Up!";
+  question.textContent = "";
+  choices.innerHTML = "";
 }
 
+// this function is also triggered when the Start Quiz button is clicked.
+function displayQuestion() {
+  // this is a boolean to check that the index of questions being displayed is "tracked", if the last question is answered, then that means the user has reached the end of the quiz, otherwise, the quiz continues.
+  if (currentQuestionIndex < questionContainer.length) {
+    var currentQuestion = questionContainer[currentQuestionIndex];
+      question.textContent = currentQuestion.question;
+      console.log("Displaying question:", currentQuestion.question)
+      // this clears out the answer choices
+      choices.innerHTML = "";
 
-var questions = [
+    // this for loop tells the computer to start with the first question (0) and gives the answer choices. Then it moves on to the next question.
+    for (var i = 0; i < currentQuestion.choices.length; i++) {
+      // this goes to the question being displayed and creates an index for the answer choices
+      var choice = currentQuestion.choices[i];
+      
+      // this makes all the answer choices into buttons
+      var choiceButton = document.createElement("button");
+      choiceButton.textContent = choice;
+      // this will allow me to style the button
+      choiceButton.setAttribute("class", "choice");
+      // this event listener checks the user's answer once they click one of the choices to see if it's right or wrong
+      choiceButton.addEventListener("click", checkAnswer);
+      // this adds all the new elements to the choice buttons
+      choices.appendChild(choiceButton);
+    }
+    // this tells the computer when to move on to the next question
+    currentQuestionIndex++;
+  } else {
+    // function described above
+    countEnd();
+  }
+}
+
+// function checkAnswer(event) {
+//   var selectedAnswer = event.target.textContent;
+//   var currentQuestion = questionContainer[currentQuestionIndex];
+
+//   if (selectedAnswer === currentQuestion.answer) {
+//     // Correct answer
+//     alert("Correct!");
+//     console.log("it works")
+//     // Award 10 points 
+//   } else {
+//     (selectedAnswer !== currentQuestion.answer);
+//     alert("Incorrect!");
+//     // Deduct 10 seconds from the timer
+//     timerCount -= 10;
+//     if (timerCount < 0) {
+//       timerCount = 0;
+//     }
+//   }
+//   timerEl.textContent = timerCount + " seconds left!";
+//   displayQuestion();
+// }
+ 
+var questionContainer = [
   {
-    title: "Commonly used data types DO NOT include:",
+    question: "Commonly used data types DO NOT include:",
     choices: ["strings", "booleans", "alerts", "numbers"],
     answer: "alerts",
   },
   {
-    title: "The condition in an if / else statement is enclosed within ____.",
+    question: "The condition in an if / else statement is enclosed within ____.",
     choices: ["quotation marks", "curly brackets", "parentheses", "square brackets"],
     answer: "parentheses",
   },
   {
-    title: "Arrays in JavaScript can be used to store ____.",
+    question: "Arrays in JavaScript can be used to store ____.",
     choices: [
       "numbers and strings",
       "other arrays",
@@ -56,122 +124,20 @@ var questions = [
     answer: "all of the above",
   },
   {
-    title:
+    question:
       "String values must be enclosed within ____ when being assigned to variables.",
     choices: ["commas", "curly brackets", "quotation marks", "parentheses"],
     answer: "quotation marks",
   },
   {
-    title:
+    question:
       "A very useful tool used during development and debugging for printing content to the debugger is:",
     choices: ["JavaScript", "terminal / bash", "for loops", "console.log"],
     answer: "console.log",
   },
 ];
 
-// global variables
-// question index is 5, but starts with 0 then through 4
-var allQs = 0;
-// amount of time alloted for each question (15 sec) 
-// questionsEl pulls all of the question elements from the array
-// .length means there are 5 questions to answer/ 5 elements in the array
-var timePerQ = questions.length * 15;
-var questionsEl = document.getElementById("questions");
-var timeEl = document.querySelector("#countDown")
-var choicesEl = document.querySelector("#choices")
-
-function showQuestion() {
-  // displayQ represents the question that is presented on the screen. It must go to the questions element in order to know what question from the questions array to present to user
-  var displayQ = questions[allQs];
-  // In order for the question to be displayed, the question title element out of the questions array needs to be "called"
-  var titleEl = document.getElementById("question-title")
-  // this is the text that will show on the screen. From all the questions, the one that is presented to the user comes from the titles in the questions array
-  titleEl.textContent = displayQ.title
-
-  // remove choices from previous question
-  choicesEl.innerHTML = " ";
-
-  // this for loop will repeat the same process of providing the choices for each question (from the questions array) that is being displayed at the time 
-  // var i = 0 means that it starts with the first item in the index (array)
-  // i < displayQ.choices.length means that the process will continue until it reaches the end of the array contents
-  // i++ means that it will move to the next element/question&choices in the questions array
-  for (var i = 0; i < displayQ.choices.length; i++) {
-    // defining choice as the choices from each question in the index array of question bank
-    var choice = displayQ.choices[i];
-    // creating buttons for each answer choice 
-    var choicesBtn = document.createElement("button");
-    // this will be used to style the choice buttons
-    choicesBtn.setAttribute("class", "choice");
-    // this will pull the content from the choice variable within the questions array)
-    choicesBtn.setAttribute("value", choice)
-    // This is the content that will be in each button: numbers each button starting @ 1. 
-    choicesBtn.textContent = i + 1 + ". " + choice
-    // this is how everything about the button will be displayed
-    choicesEl.appendChild(choicesBtn);
-  }
-}
-
-
-// var currentQuestionIndex = 0;
-// //   call function to go to the next question
-// var time = questions.length * 15;
-// var timerId;
-
-// // variables to reference DOM elements
-// // var timerEl = document.getElementById('time');
-// var choicesEl = document.getElementById('choices');
-// var submitBtn = document.getElementById('submit');
-// // var startBtn = document.getElementById('start');
-
-
-// function getQuestion() {
-//   // get current question object from array
-//   var currentQuestion = questions[currentQuestionIndex];
-//   console.log(currentQuestion)
-
-//   // update title with current question
-//   var titleEl = document.getElementById('question-title');
-//   titleEl.textContent = currentQuestion.title;
-
-//   // clear out any old question choices
-//   choicesEl.innerHTML = '';
-
-//   // loop over choices
-//   for (var i = 0; i < currentQuestion.choices.length; i++) {
-//     // create new button for each choice
-//     var choice = currentQuestion.choices[i];
-//     var choiceNode = document.createElement('button');
-//     choiceNode.setAttribute('class', 'choice');
-//     choiceNode.setAttribute('value', choice);
-
-//     choiceNode.textContent = i + 1 + '. ' + choice;
-
-//     // display on the page
-//     choicesEl.appendChild(choiceNode);
-//   }
-// }
-// getQuestion()
-// function questionClick(event) {
-//   var buttonEl = event.target;
-
-//   // check if user guessed wrong
-//   if (buttonEl.value !== questions[currentQuestionIndex].answer) {
-//     // penalize time
-//     time -= 15;
-
-//     if (time < 0) {
-//       time = 0;
-//     }
-//   }
-//   // move to next question
-//   currentQuestionIndex++;
-
-//   // check if we've run out of questions
-//   if (time <= 0 || currentQuestionIndex === questions.length) {
-//     // quizEnd();
-//   } else {
-//     getQuestion();
-//   }
-// }
-// // user clicks on element containing choices
-// choicesEl.onclick = questionClick;
+document.getElementById("initials-form").addEventListener("submit", function (submitEvent) {
+  submitEvent.preventDefault();
+  var initials = document.getElementById("initials").value;
+});
