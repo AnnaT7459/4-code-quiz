@@ -73,6 +73,8 @@ function displayQuestion() {
       var choice = currentQuestion.choices[i];
       // this makes all the answer choices into buttons
       var choiceButton = document.createElement("button");
+      // able to style buttons in CSS
+      choiceButton.classList.add("custom-button-class");
       choiceButton.textContent = choice;
       // this will allow me to style the button
       choiceButton.setAttribute("class", "choice");

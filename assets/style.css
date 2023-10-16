@@ -10,8 +10,7 @@ body {
 }
 
 header {
-    background-color: purple;
-    color: #fff;
+    color: purple;
     text-align: center;
     padding: 20px;
 }
@@ -55,7 +54,7 @@ main h2 {
 }
 
 #startButton {
-    background-color: purple;
+    background-color: rgb(63, 9, 63);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -68,6 +67,16 @@ main h2 {
 
 #startButton:hover {
     background-color: purple;
+}
+
+.custom-button-class {
+    background-color: rgb(63, 9, 63);
+    color: white;
+}
+
+.custom-button-class:hover {
+    background-color: purple;
+    color: white
 }
 
 #score {
