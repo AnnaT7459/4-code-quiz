@@ -16,8 +16,11 @@ var timerCount = 75;
 var score = 0
 // this will show the user their final score at the end of the quiz
 var finalScoreElement = document.getElementById("final-score");
-finalScoreElement.textContent = score; 
+finalScoreElement.textContent = score;
 
+var viewHighScoresBtn = document.getElementById("view-high-scores");
+
+var retakeQuizBtn = document.getElementById("retake-quiz");
 
 // created an event listener when the "Start Quiz" button is clicked. That triggers the startQuiz function.
 startBtn.addEventListener("click", startQuiz);
@@ -82,9 +85,6 @@ function displayQuestion() {
   } else {
     // function described above
     countEnd();
-    // users will be able to enter their initials with their high score after the quiz ends
-    var initialsForm = document.getElementById("initials-form");
-    initialsForm.style.display = "block";
   }
 }
 
@@ -159,7 +159,3 @@ var questionContainer = [
   },
 ];
 
-document.getElementById("initials-form").addEventListener("submit", function (submitEvent) {
-  submitEvent.preventDefault();
-  var initials = document.getElementById("initials").value;
-});
